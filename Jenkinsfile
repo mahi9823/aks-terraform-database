@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Terraform Plan') {
             steps {
-                sh '/tmp/terraform plan -input=false'
+                sh '/tmp/terraform plan -input=false -var-file=/tmp/terraform.tfvars'
             }
         }
 
@@ -31,7 +31,7 @@ pipeline {
                 sh 'ls -l terraform.tfvars.example'
             }
         } 
-        
+
         stage('Terraform Validate') {
             steps {
                 sh '/tmp/terraform validate'
