@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -20,21 +19,23 @@ pipeline {
                 sh '/tmp/terraform init -backend=false'
             }
         }
-        stage('Terraform Plan') {
-            steps {
-                sh '/tmp/terraform plan -input=false -var-file=/tmp/terraform.tfvars'
-            }
-        }
-
-        stage('Check Terraform Variables File') {
-            steps {
-                sh 'ls -l terraform.tfvars.example'
-            }
-        } 
 
         stage('Terraform Validate') {
             steps {
                 sh '/tmp/terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'azure-client-id', variable: 'ARM_CLIENT_ID'),
+                    string(credentialsId: 'azure-client-secret', variable: 'ARM_CLIENT_SECRET'),
+                    string(credentialsId: 'azure-tenant-id', variable: 'ARM_TENANT_ID'),
+                    string(credentialsId: 'azure-subscription-id', variable: 'ARM_SUBSCRIPTION_ID')
+                ]) {
+                    sh '/tmp/terraform plan -input=false -var-file=/tmp/terraform.tfvars'
+                }
             }
         }
     }
