@@ -1,0 +1,27 @@
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
+secret.yaml
+
+# Terraform variable files with secrets
+*.tfvars
+!terraform.tfvars.example
+
+# Terraform plan files
+*.tfplan
+tfplan
+
+# Credentials and secret files
+*.pem
+*.key
+.env
+.env.*
+
+# Keep example configuration files
+!*.tfvars.example
+
+# Local files
+.DS_Store
+Thumbs.db

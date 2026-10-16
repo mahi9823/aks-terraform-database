@@ -1,0 +1,13 @@
+# Configure a remote backend in a separate backend configuration file.
+# Create the Storage Account and container first, then use:
+#
+# terraform {
+#   backend "azurerm" {
+#     resource_group_name  = "terraform-state-rg"
+#     storage_account_name = "REPLACE_WITH_UNIQUE_STORAGE_NAME"
+#     container_name       = "tfstate"
+#     key                  = "aks/production.tfstate"
+#   }
+# }
+#
+# Do not commit credentials or state files to Git.
