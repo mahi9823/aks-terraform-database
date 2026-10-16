@@ -1,16 +1,20 @@
 pipeline {
     agent any
 
+    tools {
+        terraform 'Terraform'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                echo 'GitHub repository checkout successful'
+                echo 'GitHub checkout successful'
             }
         }
 
         stage('Terraform Version') {
             steps {
-                echo 'Next step: configure Terraform in Jenkins'
+                sh '/tmp/terraform version'
             }
         }
     }
