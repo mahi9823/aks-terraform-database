@@ -20,7 +20,11 @@ pipeline {
                 sh '/tmp/terraform init -backend=false'
             }
         }
-
+        stage('Terraform Plan') {
+            steps {
+                sh '/tmp/terraform plan -input=false'
+            }
+        }
         stage('Terraform Validate') {
             steps {
                 sh '/tmp/terraform validate'
