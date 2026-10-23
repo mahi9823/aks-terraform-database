@@ -1,31 +1,30 @@
-output "aks_cluster_ids" {
-  value = {
-    for key, cluster in azurerm_kubernetes_cluster.aks : key => cluster.id
-  }
+output "resource_group_name" {
+  description = "Resource group name where the cluster is deployed"
+  value       = azurerm_resource_group.aks.name
 }
 
 output "aks_cluster_names" {
+  description = "Names of the provisioned AKS cluster(s)"
   value = {
     for key, cluster in azurerm_kubernetes_cluster.aks : key => cluster.name
   }
 }
 
+output "aks_cluster_ids" {
+  description = "Resource IDs of the provisioned AKS cluster(s)"
+  value = {
+    for key, cluster in azurerm_kubernetes_cluster.aks : key => cluster.id
+  }
+}
+
 output "log_analytics_workspace_id" {
-  value = azurerm_log_analytics_workspace.aks.id
+  description = "Log Analytics workspace resource ID"
+  value       = azurerm_log_analytics_workspace.aks.id
 }
 
-output "postgres_server_fqdns" {
-  description = "Private FQDNs for PostgreSQL Flexible Servers"
+output "get_credentials_commands" {
+  description = "Commands to configure kubectl credentials for your educational cluster(s)"
   value = {
-    for key, server in azurerm_postgresql_flexible_server.postgres : key => server.fqdn
+    for key, cluster in azurerm_kubernetes_cluster.aks : key => "az aks get-credentials --resource-group ${azurerm_resource_group.aks.name} --name ${cluster.name} --overwrite-existing"
   }
 }
-
-output "postgres_database_names" {
-  value = {
-    for key, db in azurerm_postgresql_flexible_server_database.app : key => db.name
-  }
-}
-
-# Password is intentionally not output. Terraform state still contains sensitive data;
-# protect the remote state with encryption and strict access controls.

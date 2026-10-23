@@ -4,33 +4,28 @@ variable "subscription_id" {
 }
 
 variable "location" {
-  type    = string
-  default = "East US"
+  type        = string
+  default     = "East US"
+  description = "Azure region where resources will be created"
 }
 
 variable "resource_group_name" {
-  type    = string
-  default = "mahesh-aks-prod-rg"
+  type        = string
+  default     = "mahesh-aks-edu-rg"
+  description = "Name of the Azure Resource Group"
 }
 
 variable "aks_clusters" {
-  description = "AKS clusters and associated PostgreSQL configuration, keyed by environment"
+  description = "Map of AKS clusters for educational/learning purposes"
   type = map(object({
-    name                 = string
-    dns_prefix           = string
-    kubernetes_version   = string
-    system_node_count    = number
-    system_vm_size       = string
-    user_node_count      = number
-    user_vm_size         = string
-    vnet_cidr            = string
-    aks_subnet_cidr      = string
-    postgres_subnet_cidr = string
-    service_cidr         = string
-    dns_service_ip       = string
-    postgres_server_name = string
-    postgres_admin_login = string
-    postgres_sku_name    = string
-    postgres_storage_mb  = number
+    name               = string
+    dns_prefix         = string
+    kubernetes_version = optional(string, "1.36.4")
+    node_count         = optional(number, 1)
+    vm_size            = optional(string, "Standard_D2s_v4")
+    vnet_cidr          = optional(string, "10.20.0.0/16")
+    aks_subnet_cidr    = optional(string, "10.20.1.0/24")
+    service_cidr       = optional(string, "10.30.0.0/16")
+    dns_service_ip     = optional(string, "10.30.0.10")
   }))
 }
